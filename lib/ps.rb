@@ -41,14 +41,28 @@ module PS
   end
 
   def pid *pids
-    opts = pids.pop if pids.last.is_a?(Hash)
+    opts = pids.pop if pids.last.is_a?(Hash) || pids.last.nil?
     opts ||= {}
-    opts[:flag] ||= %w{A}
+    opts[:flag] ||= %w{}
     opts[:pid] = pids
     opts[:format] ||= DEFAULT_FORMATTING
 
     c = Command.new(opts)
     c.to_processes
+  end
+
+  def from_lsof match, args={}
+    lines = `lsof -i #{match} -sTCP:LISTEN`.chomp.split("\n")
+    lines.shift # remove header
+    
+    pids = lines.collect do |line|
+      if m = line.match(/\s*\w+\s+(\d+)/)
+        m[1].to_i
+      end
+    end.compact
+
+    pids << args
+    pid(*pids)
   end
 end
 
@@ -62,8 +76,10 @@ def PS *args
     procs = PS.all(args[1])
     procs.select {|proc| proc.command =~ args[0]}
   when Integer
-    PS.pid(args[0],args[1]).first
+    PS.pid(*args).first
   when Hash
-    PS.all(args[0])
+    PS.all(*args)
+  when /\:\d+$/
+    PS.from_lsof(*args)
   end
 end

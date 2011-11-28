@@ -76,6 +76,7 @@ module PS
 
     def parse_formats!
       @formats.each do |format|
+        format = format.sub('=','')
         unless DEFAULT_FORMATTING.include?(format)
           warn("Untested formatting option: #{format}")
         end

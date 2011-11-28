@@ -40,5 +40,18 @@ module PS
       rss/1024.0 if rss
     end
 
+    def alive?
+      return unless pid
+      Process.getpgid(pid)
+      true
+    rescue Errno::ESRCH
+      false
+    end
+
+    def kill!(sig=nil)
+      sig ||= 'INT'
+      ::Process.kill(sig, pid) if pid
+    end
+
   end
 end
