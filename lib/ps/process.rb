@@ -1,7 +1,7 @@
 module PS
   class Process
 
-    ALL_OPTS.each do |opt|
+    ALL_FORMATS.each do |opt|
       define_method opt do
         @data[opt]
       end

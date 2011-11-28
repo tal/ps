@@ -3,7 +3,7 @@ require "ps/version"
 module PS
   extend self
 
-  ALL_OPTS = `ps -L`.chomp.split(/[\s\n]/).freeze
+  ALL_FORMATS = `ps -L`.chomp.split(/[\s\n]/).freeze
   FORMAT_ALIASES = {
     'pcpu' => '%cpu',
     'pmem' => '%mem',
@@ -22,11 +22,6 @@ module PS
     'putime' => 'utime',
     'vsize' => 'vsz'
   }
-
-  def default_formatting
-    @default_formatting ||= ALL_OPTS
-  end
-  attr_writer :default_formatting
 
   DEFAULT_FORMATTING = %w{pid ppid pgid rss vsz %mem %cpu ruser
     user uid gid lstart state command}
