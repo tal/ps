@@ -4,7 +4,7 @@ require "ps/version"
 
 Gem::Specification.new do |s|
   s.name        = "ps"
-  s.version     = Ps::VERSION
+  s.version     = PS::VERSION
   s.authors     = ["Tal Atlas"]
   s.email       = ["me@tal.by"]
   s.homepage    = "https://github.com/Talby/ps"

@@ -1,3 +1,3 @@
-module Ps
-  VERSION = "0.0.1"
+module PS
+  VERSION = "0.0.2"
 end
