@@ -48,6 +48,18 @@ module PS
       false
     end
 
+    def display
+      disp = []
+      disp << pid
+      disp << user
+      disp << lstart
+      disp << pcpu
+      disp << pmem
+      disp << mem
+      disp << command
+      disp.compact.join(' ')
+    end
+
     def kill!(sig=nil)
       sig ||= 'INT'
       ::Process.kill(sig, pid) if pid
