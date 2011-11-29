@@ -70,7 +70,7 @@ def PS *args
   when Regexp
     opts = args[1] || {}
     procs = PS.all(opts)
-    procs = procs.select {|proc| proc.command =~ args[0]}
+    procs = procs.command(args[0])
     procs = procs.select {|proc| proc.pid != Process.pid} unless opts[:include_self]
     procs
   when Integer
