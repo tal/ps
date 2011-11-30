@@ -64,13 +64,14 @@ end
 require 'ps/command'
 require 'ps/process'
 require 'ps/process_list'
+require 'ps/process_list_printer'
 
 def PS *args
   case args[0]
   when Regexp
     opts = args[1] || {}
     procs = PS.all(opts)
-    procs = procs.command(args[0])
+    procs = procs.select {|proc| proc.command =~ args[0]}
     procs = procs.select {|proc| proc.pid != Process.pid} unless opts[:include_self]
     procs
   when Integer
