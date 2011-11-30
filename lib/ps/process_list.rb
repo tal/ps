@@ -13,7 +13,7 @@ module PS
     end
 
     def over val, amnt
-      select do |proc|
+      find_all do |proc|
         proc.__send__(val) >= amnt
       end
     end
@@ -29,10 +29,14 @@ module PS
     end
 
     def choose question=nil
+      if empty?
+        puts "No processes found."
+        return self
+      end
       question ||= 'Select process(s):'
       self.print
       puts "\n#{question}"
-      proc_ids = gets.chomp
+      proc_ids = STDIN.gets.chomp
       proc_ids = '*' if proc_ids.empty?
       proc_ids = proc_ids.split(/[,\s]/)
 
@@ -70,8 +74,8 @@ module PS
 
     # Ugh shoot me for using method missing, couldn't get
     # it to work any other way.
-    def method_missing(name, *args, &blk)
-      new_target = @target.send(name, *args, &blk)
+    def method_missing(*args, &blk)
+      new_target = @target.send(*args, &blk)
        
       new_target.class == @target.class ? self.class.new(new_target) : new_target
     end

@@ -7,7 +7,7 @@ module PS
     class Printer
 
       def initialize pl, headers=nil
-        @headers = headers || %w{# pid user pcpu mem command}
+        @headers = headers || %w{# pid ppid user pcpu mem command}
         @process_list = pl
       end
 
@@ -38,15 +38,15 @@ module PS
             when 'pcpu', 'pmem'
               cell[:align] = :right
               cell[:format] = case cell[:val]
-              when 0.0...0.5
+              when 0.0...25.0
                 []
-              when 0.5...0.75
+              when 25.0..75.0
                 [:red]
               else
                 [:white,:on_red]
               end
               
-              cell[:val] = (cell[:val]*100).to_i.to_s+'%'
+              cell[:val] = (cell[:val]).to_i.to_s+'%'
             end
 
             cell
@@ -75,10 +75,11 @@ module PS
           end
         end
 
-        row_separator = column_widths.map { |width| "-" * (width+2) }.join("+")
+        row_separator = column_widths.map { |width| "-" * (width+2) }.join("+")[0...ANSI::Terminal.terminal_width]
 
         # strs << row_separator
         table.each_with_index do |row,ri|
+          diff = 0
           justified_row = row.enum_for(:map).with_index do |cell,ci|
             val = cell[:val].to_s
 
@@ -94,14 +95,18 @@ module PS
             end
 
             # padded_val.sub!(val,val.ansi(*cell[:format])) if cell[:format] && !cell[:format].empty?
-            padded_val.ansi!(*cell[:format]) if cell[:format] && !cell[:format].empty?
+            if cell[:format] && !cell[:format].empty?
+              orig_len = padded_val.length
+              padded_val.ansi!(*cell[:format])
+              diff += padded_val.length - orig_len
+            end
 
             str << padded_val
 
             str << " "
             str
           end
-          strs << justified_row.join("|")[0...ANSI::Terminal.terminal_width]
+          strs << justified_row.join("|")[0...ANSI::Terminal.terminal_width+diff]
           strs << row_separator if ri == 0
         end
 
