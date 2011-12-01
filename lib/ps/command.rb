@@ -58,7 +58,6 @@ module PS
       reg = nil
       run!.split("\n").collect do |line|
         reg ||= regex
-        puts line
         m = line.match(reg)
         hsh = {}
         @last_ran_formats.each_with_index do |val,i|
