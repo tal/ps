@@ -45,7 +45,7 @@ module PS
         when 'command='
           '(.+)$'
         when 'lstart='
-          '(\w{3}\s\w{3}\s\d{2}\s[\d\:]{8}\s\d{4})'
+          '(\w{3}\s\w{3}\s[\s\d]{2}\s[\d\:]{8}\s\d{4})'
         else
           '([\w\,_\-\.]+)'
         end
@@ -58,6 +58,7 @@ module PS
       reg = nil
       run!.split("\n").collect do |line|
         reg ||= regex
+        puts line
         m = line.match(reg)
         hsh = {}
         @last_ran_formats.each_with_index do |val,i|
