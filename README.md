@@ -20,6 +20,8 @@ Processes have methods for every value listed in `ps -L` with `%` aliased to `pc
 
 ## Example
 
+If I wanted to kill firefox if it got more than 50% cpu or 600mb of memory.
+
     fx = PS(/Firefox.app/).first
     # only kill if taking up more than 50% cpu or 600mb of memory
     exit unless fx.pcpu > 50 || fx.mem > 600
@@ -28,6 +30,7 @@ Processes have methods for every value listed in `ps -L` with `%` aliased to `pc
     while fx.alive?
       retries += 1
       if retries > 5
+        # If sigint hasn't worked after .5 sec try SIGTERM
         fx.kill!("TERM")
       end
       sleep 0.1
