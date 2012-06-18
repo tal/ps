@@ -32,4 +32,3 @@ Processes have methods for every value listed in `ps -L` with `%` aliased to `pc
       end
       sleep 0.1
     end
-    my_magic_install_new_firefox_method
