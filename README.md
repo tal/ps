@@ -14,6 +14,12 @@ or for shorthand
 
     process_list = PS(/Firefox.app/)
 
+### Finding process based on attached port
+
+To return any processes attached to port 80.
+
+    process_list = PS(':80')
+
 ## Process
 
 Processes have methods for every value listed in `ps -L` with `%` aliased to `pct`. The method `mem` was added which gives the megabytes of memory used by the process. The method `kill!(sig="INT")` was also added to send a kill command to the process. And you can call `alive?` to poll if the process is still alive.
