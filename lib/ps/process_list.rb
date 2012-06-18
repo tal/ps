@@ -28,6 +28,8 @@ module PS
       to.send :puts, printer.to_s
     end
 
+    # Print out all the processes and accept user input to return
+    # the process objects selected.
     def choose question=nil
       if empty?
         puts "No processes found."
@@ -76,7 +78,7 @@ module PS
     # it to work any other way.
     def method_missing(*args, &blk)
       new_target = @target.send(*args, &blk)
-       
+
       new_target.class == @target.class ? self.class.new(new_target) : new_target
     end
   end

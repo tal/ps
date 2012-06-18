@@ -49,7 +49,7 @@ module PS
   def from_lsof match, args={}
     lines = `lsof -i #{match} -sTCP:LISTEN`.chomp.split("\n")
     lines.shift # remove header
-    
+
     pids = lines.collect do |line|
       if m = line.match(/\s*\w+\s+(\d+)/)
         m[1].to_i
@@ -68,6 +68,8 @@ require 'ps/process_list_printer'
 
 def PS *args
   case args[0]
+  when /\:\d+$/
+    PS.from_lsof(*args)
   when Regexp
     opts = args[1] || {}
     procs = PS.all(opts)
@@ -75,10 +77,16 @@ def PS *args
     procs = procs.select {|proc| proc.pid != Process.pid} unless opts[:include_self]
     procs
   when Integer
-    PS.pid(*args).first
+    if args[1].is_a?(Integer)
+      PS.pid(*args)
+    else
+      PS.pid(*args).first
+    end
+  when Array
+    pids = args[0]
+    pids << args[1] || {}
+    PS.pid(*pids)
   when Hash
     PS.all(*args)
-  when /\:\d+$/
-    PS.from_lsof(*args)
   end
 end
