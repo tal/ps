@@ -18,7 +18,11 @@ or for shorthand
 
 Processes have methods for every value listed in `ps -L` with `%` aliased to `pct`. The method `mem` was added which gives the megabytes of memory used by the process. The method `kill!(sig="INT")` was also added to send a kill command to the process. And you can call `alive?` to poll if the process is still alive.
 
+## Example
+
     fx = PS(/Firefox.app/).first
+    # only kill if taking up more than 50% cpu or 600mb of memory
+    exit unless fx.pcpu > 50 || fx.mem > 600
     retries = 0
     fx.kill!
     while fx.alive?
