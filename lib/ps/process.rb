@@ -42,7 +42,7 @@ module PS
 
     def alive?
       return unless pid
-      Process.getpgid(pid)
+      ::Process.getpgid(pid)
       true
     rescue Errno::ESRCH
       false
