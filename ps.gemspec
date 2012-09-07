@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = PS::VERSION
   s.authors     = ["Tal Atlas"]
   s.email       = ["me@tal.by"]
-  s.homepage    = "https://github.com/Talby/ps"
+  s.homepage    = "https://github.com/tal/ps"
   s.summary     = %q{A ruby wrapper for the unix tool 'ps'}
   s.description = %q{A ruby utility for interacting with the unix tool 'ps'}
 
