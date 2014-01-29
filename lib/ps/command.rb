@@ -84,11 +84,11 @@ module PS
 
       @formats = @formats.collect do |format|
         format = FORMAT_ALIASES[format.sub('=','')] || format
-        format.sub(/(=)?$/,'=')
+#        format.sub(/(=)?$/,'=')
       end.uniq
 
       # ensure command is always at the end of the formats array
-      if @formats.delete('command=')
+      if @formats.delete('command')
         @formats.push('command=')
       end
 
